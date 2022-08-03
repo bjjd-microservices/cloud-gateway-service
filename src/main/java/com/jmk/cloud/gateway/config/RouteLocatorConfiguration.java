@@ -15,7 +15,6 @@ public class RouteLocatorConfiguration {
 	
 	@Resource(name="requestHeaderFilter")
 	private GatewayFilter gatewayFilter;
-	
 	@Autowired
 	private TokenRelayGatewayFilterFactory filterFactory;
 	
