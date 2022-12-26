@@ -70,22 +70,18 @@
 			<artifactId>spring-security-oauth2-jose</artifactId>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-security</artifactId>
-		</dependency>
 		<!-- OAUTH2.0 CLIENT LIBRARIES: Ends -->
 	
 		<!-- Distributed Logging Api -->
-		 <dependency>
+		 <!--<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
-		</dependency>
+		</dependency>-->
 
 		<!-- Zipkin:distributed tracing system which provides a UI to see the traces -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-zipkin</artifactId>
+			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
 		</dependency>
 		
 		<dependency>
