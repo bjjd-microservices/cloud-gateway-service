@@ -12,35 +12,7 @@ pipeline {
              git url: 'https://github.com/bjjd-microservices/cloud-gateway-service.git' , branch: 'master'
             }
         }
-        stage('Remove existing Docker Image') {
-                     steps {
-                         sh "docker rm -f cloud-gateway-service || true"
-                         sh "docker rmi \$(docker images | grep 'rajivbansal2981/cloud-gateway-service') &> /dev/null || true"
-                     }
-        }
-        stage('Build Project') {
-            steps{
-                sh "mvn clean install -DskipTests"
-            }
-        }
-        stage('Build Docker Image') {
-            steps {
-                 sh "docker build -t rajivbansal2981/cloud-gateway-service:${BUILD_NUMBER} ."
-            }
-        }
-        stage('Docker Login and push') {
-                steps {
-                         withCredentials([string(credentialsId: 'DockerHubPassword', variable: 'DockerHubPassword')]) {
-                             sh "docker login -u rajivbansal2981 -p ${DockerHubPassword}"
-                         }
-                         sh "docker push rajivbansal2981/cloud-gateway-service:${BUILD_NUMBER}"
-                    }
-                }
-        stage('Deploy Docker application in Jenkin Server') {
-            steps {
-                     sh "docker run -d -p 8888:8888 --name cloud-gateway-service rajivbansal2981/cloud-gateway-service:${BUILD_NUMBER}"
-            }
-        }
+
     }
 
 }
