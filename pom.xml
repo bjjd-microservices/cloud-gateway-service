@@ -121,9 +121,9 @@
 		<!-- Spring Cloud Starter Kubernetes is required for Kubernetes -->
 	</profile>
 	<profile>
-		<id>prod</id>
+		<id>kubernetes</id>
 		<properties>
-			<spring.profiles.active>prod</spring.profiles.active>
+			<spring.profiles.active>kubernetes</spring.profiles.active>
 		</properties>
 		<dependencies>
 			<dependency>
