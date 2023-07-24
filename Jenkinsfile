@@ -44,7 +44,7 @@ pipeline {
     }
     stage('Build Docker Image and Push on Docker Hub') {
       steps {
-        dir('cloud-gateway-service') {
+
           withCredentials([string(credentialsId: 'DockerHubPassword', variable: 'DockerHubPassword')]) {
             //1. Build docker image
              sh "docker build -t rajivbansal2981/cloud-gateway-service:${env.version} ."
@@ -55,7 +55,7 @@ pipeline {
 
             //3. Remove docker image from jenkins machine
             sh "docker rmi rajivbansal2981/cloud-gateway-service:${env.version}"
-          }
+
         }
       }
     }
