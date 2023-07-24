@@ -34,7 +34,7 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "cloud-gateway-service.labels" -}}
-helm.sh/chart: {{ include "dcloud-gateway-service.chart" . }}
+helm.sh/chart: {{ include "cloud-gateway-service.chart" . }}
 {{ include "cloud-gateway-service.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
