@@ -34,7 +34,7 @@ pipeline {
     }
     stage('Build Project') {
       steps {
-        sh "mvn clean install -DskipTests -Pprod"
+        sh "mvn clean install -DskipTests -Pkubernetes"
         script {
           def version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
           print version
@@ -61,7 +61,7 @@ pipeline {
     }
     stage('Validating helm configurations using Datree'){
                  steps {
-                     dir('cloud-gateway-service/k8s/') {
+                     dir('k8s/') {
                         withEnv(['DATREE_TOKEN=3736500e-a75c-49ca-b271-24ea5f611c90']) {
                         //    sh "helm datree test cloud-gateway-service/"
                         }
@@ -72,7 +72,7 @@ pipeline {
           steps {
             script{
                  withCredentials([string(credentialsId: 'NexusRepositoryPassword', variable: 'NexusRepositoryPassword')]) {
-                    dir('cloud-gateway-service/k8s') {
+                    dir('k8s') {
                         def chartVersion =  sh script: "helm show chart cloud-gateway-service | grep version | cut -d: -f 2 | tr -d ' ' | tr -d '\\n'",returnStdout: true
                         def chartName =  sh script: "helm show chart cloud-gateway-service | grep name | cut -d: -f 2 | tr -d ' ' | tr -d '\\n'",returnStdout: true
                         def chartPackage ="${chartName}-${chartVersion}.tgz"
@@ -80,14 +80,11 @@ pipeline {
 
                         //1. Packaging helm chart
                         sh "helm package ${chartPath} --version ${chartVersion}"
-                        sh "microk8s.kubectl config view --raw > $HOME/.kube/config"
-                        sh  "microk8s.kubectl config view --raw > ~/.kube/config"
-                        sh "sudo chown -R jenkins ~/.kube"
                         sh "helm upgrade --install -n bjjd-system cloud-gateway-service cloud-gateway-service"
 
-//                      sh """
-  //                     curl -u admin:$NexusRepositoryPassword -v http://localhost:8081/repository/helm_hosted/cloud-gateway-service/ --upload-file cloud-gateway-service-0.1.0.tgz
-    //                 """
+                      sh """
+                       curl -u admin:$NexusRepositoryPassword -v http://localhost:8081/repository/helm_hosted/cloud-gateway-service/ --upload-file cloud-gateway-service-0.1.0.tgz
+                     """
                   }
                 }
 
@@ -98,7 +95,7 @@ pipeline {
                   steps {
                     script{
 
-                            dir('cloud-gateway-service/k8s') {
+                            dir('k8s') {
 
                                 //1. Packaging helm chart
                              //   sh "helm upgrade --install -n bjjd-system cloud-gateway-service cloud-gateway-service"
@@ -113,7 +110,7 @@ pipeline {
         stage('Verify the Deployment on MicroK8s') {
               steps {
 
-                    sh "microk8s.kubectl version"
+                    sh "kubectl version"
                }
         }
        stage('DeployDockerApplicationInJenkinsServer') {
@@ -121,7 +118,7 @@ pipeline {
                       branch 'production'
                 }
                 steps {
-                      sh "docker run -d -p 3379:3379 --name cloud-gateway-service rajivbansal2981/cloud-gateway-service:${env.version}"
+                      sh "docker run -d -p 4379:4379 --name cloud-gateway-service rajivbansal2981/cloud-gateway-service:${env.version}"
                   }
        }
   }

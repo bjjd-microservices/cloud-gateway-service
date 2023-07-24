@@ -7,4 +7,4 @@ RUN mvn clean install -DskipTests -P prod
 FROM openjdk:11-jre-slim-buster as runtime
 COPY --from=buider /usr/app/target/cloud-gateway-service-*.jar cloud-gateway-service-0.0.1-RELEASE.jar
 EXPOSE 3379
-CMD ["java","-jar","/cloud-gateway-service-0.0.1-RELEASE.jar"]
+CMD ["java","-jar","/cloud-gateway-service-0.0.1.RELEASE.jar"]
