@@ -1,10 +1,14 @@
-FROM maven:3.8.1-openjdk-11-slim AS builder
-RUN mkdir -p /usr/app
-COPY . /usr/app
-WORKDIR /usr/app
-RUN mvn clean install -DskipTests -P prod
+# Use a minimal OpenJDK image as the base
+FROM openjdk:11-jre-slim-buster
 
-FROM openjdk:11-jre-slim-buster as runtime
-COPY --from=buider /usr/app/target/cloud-gateway-service-*.jar cloud-gateway-service-0.0.1-RELEASE.jar
-EXPOSE 3379
-CMD ["java","-jar","/cloud-gateway-service-0.0.1.RELEASE.jar"]
+# Set the working directory
+WORKDIR /app
+
+# Copy the application code and any other necessary files
+COPY target/cloud-gateway-service-*.jar /app
+
+# Expose the port on which the application will listen
+EXPOSE 8181
+
+# Set the entry point
+CMD ["java","-Dspring.profiles.active=kubernetes","-jar","/app/cloud-gateway-service-0.0.1.RELEASE.jar"]
