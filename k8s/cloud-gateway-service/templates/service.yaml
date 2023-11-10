@@ -12,5 +12,6 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+      nodePort: {{ .Values.service.nodePort }}
   selector:
     {{- include "cloud-gateway-service.selectorLabels" . | nindent 4 }}

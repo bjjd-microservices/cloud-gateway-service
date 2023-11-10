@@ -41,6 +41,7 @@ securityContext: {}
 service:
   type: NodePort
   port: 8181
+  nodePort: 98181
 
 
 resources:
