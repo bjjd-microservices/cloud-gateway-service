@@ -24,8 +24,8 @@ public class GatewayConfig {
 			if (principal instanceof JwtAuthenticationToken) {
 				// Get username from Principal
 				userName = ((JwtAuthenticationToken) principal).getToken().getClaimAsString("preferred_username");
-				// emailId = principal1.getUserInfo().getEmail();
-				// Adding cookies
+				//emailId = principal1.getUserInfo().getEmail();
+				//Adding cookies
 				session = new HttpCookie("SESSION", exchange.getSession().block().getId()).toString();
 
 			}
