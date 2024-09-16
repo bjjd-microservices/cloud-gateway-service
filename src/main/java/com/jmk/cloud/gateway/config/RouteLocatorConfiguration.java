@@ -22,13 +22,13 @@ public class RouteLocatorConfiguration {
 	@Bean
 	public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
 		return builder.routes()
-				.route(r -> r.path("/api/user-service/user/**")
+				.route(r -> r.path("/api/user-service/**")
 				.filters(f -> f.filter(filterFactory.apply())
 						.removeRequestHeader("Cookie"))
 				.uri("lb://user-service") //.uri("http://127.0.0.1:3379")
 				)
 
-				.route(r -> r.path("/api/project-service/project/**")
+				.route(r -> r.path("/api/project-service/**")
 						.filters(f -> f.filter(filterFactory.apply())
 								.removeRequestHeader("Cookie"))
 						.uri("lb://project-service/")
